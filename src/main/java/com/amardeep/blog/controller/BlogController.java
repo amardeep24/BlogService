@@ -38,8 +38,8 @@ public class BlogController {
 		logger.info("####getBlog invoked with id####",id);
 		BlogDto blogDummy=new BlogDto();
 		blogDummy.setBlogId(1000L);
-		blogDummy.setBlogText("Hello World");
-		blogDummy.setBlogText("Foo Bar");
+		blogDummy.setBlogText("John Doe");
+		blogDummy.setBlogTitle("Hello John!");
 		return new ResponseEntity<>(blogDummy,HttpStatus.OK);
 		
 	}
