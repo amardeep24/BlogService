@@ -4,6 +4,9 @@
  */
 package com.amardeep.blog.controller;
 
+import java.util.Date;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.amardeep.blog.dto.BlogDto;
+import com.amardeep.blog.domain.Blog;
 import com.amardeep.blog.service.BlogService;
 
 /**
@@ -35,68 +38,38 @@ public class BlogController {
 	@Autowired
 	BlogService blogService;
 	
-	//For dev
-	BlogDto blogDummy=new BlogDto();
-	BlogDto blogDummyTwo=new BlogDto();
-	BlogDto blogDummyThree=new BlogDto();
-	
-	BlogController(){
-	blogDummy.setBlogId(1000L);
-	blogDummy.setBlogText("John Doe");
-	blogDummy.setBlogTitle("Hello John!");
-	
-	
-	blogDummyTwo.setBlogId(2000L);
-	blogDummyTwo.setBlogText("Jane Doe");
-	blogDummyTwo.setBlogTitle("Hello Jane!");
-	
-	blogDummyThree.setBlogId(3000L);
-	blogDummyThree.setBlogText("Joe Doe");
-	blogDummyThree.setBlogTitle("This note was taken by Joe!");
-	}
-	//For dev
-	
-	@GetMapping(value="blog/",produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BlogDto[]> getAllBlogs(){
+	@GetMapping(value="blog",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Blog>> getAllBlogs(){
 		logger.info("####getAllBlogs invoked####");
-		return new ResponseEntity<>(new BlogDto[]{blogDummy,blogDummyTwo,blogDummyThree},HttpStatus.OK);
+		List<Blog> blogList=blogService.getAllBlogs();
+		return new ResponseEntity<>(blogList,HttpStatus.OK);
 		
 	}
 	
 	@GetMapping(value="blog/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BlogDto> getBlog(@PathVariable("id") Long id){
+	public ResponseEntity<Blog> getBlog(@PathVariable("id") Long id){
 		logger.info("####getBlog invoked with id####",id);
-		if(id==1000L){
-			return new ResponseEntity<>(blogDummy,HttpStatus.OK);
-		}else if(id==2000L){
-			return new ResponseEntity<>(blogDummyTwo,HttpStatus.OK);
-		}else{
-			return new ResponseEntity<>(blogDummyThree,HttpStatus.OK);
-		}
+		Blog blog=blogService.getBlog(id);
+		return new ResponseEntity<>(blog,HttpStatus.OK);
 		
 	}
 	
-	@PostMapping(value="blog/", consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public BlogDto createBlog(BlogDto blog){
+	@PostMapping(value="blog", consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Blog> createBlog(Blog blog){
 		logger.info("####createBlog invoked with data####", blog);
-		BlogDto blogDummy=new BlogDto();
-		blogDummy.setBlogId(1000L);
-		blogDummy.setBlogText("Hello World");
-		blogDummy.setBlogText("Foo Bar");
-		return blogDummy;
+		blog.setBlogDate(new Date());
+		return new ResponseEntity<>(blogService.createBlog(blog),HttpStatus.CREATED);
 	}
 	@PutMapping(value="blog/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BlogDto> updateBlog(@PathVariable("id") Long id,@RequestBody BlogDto blog){
+	public ResponseEntity<Blog> updateBlog(@PathVariable("id") Long id,@RequestBody Blog blog){
 		logger.info("####updateBlog invoked with data####",blog);
-		BlogDto blogDummy=new BlogDto();
-		blogDummy.setBlogId(1000L);
-		blogDummy.setBlogText("Hello World");
-		blogDummy.setBlogText("Foo Bar");
-		return new ResponseEntity<>(blogDummy,HttpStatus.OK);
+		Blog blogUpdated=blogService.updateBlog(blog);
+		return new ResponseEntity<>(blogUpdated,HttpStatus.OK);
 	}
 	@DeleteMapping(value="blog/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BlogDto> deleteBlog(@PathVariable("id") Long id){
+	public HttpStatus deleteBlog(@PathVariable("id") Long id){
 		logger.info("####deleteBlog invoked with id####"+id);
-		return new ResponseEntity<>(HttpStatus.OK);
+		blogService.deleteBlog(id);
+		return HttpStatus.OK;
 	}
 }

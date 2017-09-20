@@ -7,21 +7,42 @@ package com.amardeep.blog.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * @author AMARDEEP
  *
  */
+@Entity
+@Table(name="BLOG")
 public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8057310798667303814L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "blog_id_generator")
+	@SequenceGenerator(name="blog_id_generator", sequenceName = "BLOG_ID_SEQ")
+	@Column(name="BLOG_ID")
 	private Long id;
+	@Column(name="BLOG_TITLE")
 	private String blogTitle;
+	@Column(name="BLOG_TEXT")
 	private String blogText;
-	private Author blogAuthor;
+	@Column(name="BLOG_AUTHOR")
+	private Integer blogAuthor;
+	@Column(name="CREATE_DATE")
 	private Date blogDate;
+	@Column(name="UPDATE_DATE")
+	private Date blogUpdateDate;
 	
 	/**
 	 * @return the id
@@ -63,13 +84,13 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 	/**
 	 * @return the blogAuthor
 	 */
-	public Author getBlogAuthor() {
+	public Integer getBlogAuthor() {
 		return blogAuthor;
 	}
 	/**
 	 * @param blogAuthor the blogAuthor to set
 	 */
-	public void setBlogAuthor(Author blogAuthor) {
+	public void setBlogAuthor(Integer blogAuthor) {
 		this.blogAuthor = blogAuthor;
 	}
 	
@@ -84,6 +105,18 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 	 */
 	public void setBlogDate(Date blogDate) {
 		this.blogDate = blogDate;
+	}
+	/**
+	 * @return the blogUpdateDate
+	 */
+	public Date getBlogUpdateDate() {
+		return blogUpdateDate;
+	}
+	/**
+	 * @param blogUpdateDate the blogUpdateDate to set
+	 */
+	public void setBlogUpdateDate(Date blogUpdateDate) {
+		this.blogUpdateDate = blogUpdateDate;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

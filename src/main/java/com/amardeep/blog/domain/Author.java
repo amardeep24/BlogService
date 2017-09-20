@@ -5,21 +5,43 @@
 package com.amardeep.blog.domain;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * @author AMARDEEP
  *
  */
+@Entity
+@Table(name="AUTHOR")
 public class Author implements Serializable,Comparable<Author>,BaseEntity {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -805125615284300488L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_id_generator")
+	@SequenceGenerator(name="author_id_generator", sequenceName = "AUTHOR_ID_SEQ")
+	@Column(name="AUTHOR_ID")
 	private Long id;
+	@Column(name="AUTHOR_NAME")
 	private String authorName;
+	@Column(name="AUTHOR_EMAIL")
 	private String authorEmail;
+	@Column(name="AUTHOR_PHONE")
 	private String authorPhone;
+	@Column(name="CREATE_DATE")
+	private Date joinDate;
+	@Column(name="UPDATE_DATE")
+	private Date updateDate;
 	
 	@Override
 	public Long getId() {
