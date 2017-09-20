@@ -55,7 +55,7 @@ public class BlogController {
 	}
 	
 	@PostMapping(value="blog", consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Blog> createBlog(Blog blog){
+	public ResponseEntity<Blog> createBlog(@RequestBody Blog blog){
 		logger.info("####createBlog invoked with data####", blog);
 		blog.setBlogDate(new Date());
 		return new ResponseEntity<>(blogService.createBlog(blog),HttpStatus.CREATED);
