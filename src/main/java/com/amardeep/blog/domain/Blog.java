@@ -5,6 +5,8 @@
 package com.amardeep.blog.domain;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,6 +16,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.amardeep.blog.api.BlogApi;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author AMARDEEP
@@ -188,6 +193,16 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 	public int compareTo(Blog blog) {
 		return this.blogDate.compareTo(blog.getBlogDate());
 	}
-	
-	
+	@JsonIgnore
+	public BlogApi getApi(){
+		DateFormat formatter=new SimpleDateFormat("d MMM yyyy");
+		BlogApi blogApi=new BlogApi();
+		blogApi.setId(this.id);
+		blogApi.setBlogTitle(this.blogTitle);
+		blogApi.setBlogText(this.blogText);
+		blogApi.setBlogAuthor(this.blogAuthor);
+		blogApi.setBlogCreationDate(this.getBlogUpdateDate()!=null && this.getBlogDate().before(this.getBlogUpdateDate())
+				? formatter.format(this.getBlogUpdateDate()) : formatter.format(this.getBlogDate()));
+		return blogApi;
+	}
 }

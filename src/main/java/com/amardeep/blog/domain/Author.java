@@ -5,7 +5,9 @@
 package com.amardeep.blog.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.amardeep.blog.api.AuthorApi;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author AMARDEEP
@@ -38,10 +43,12 @@ public class Author implements Serializable,Comparable<Author>,BaseEntity {
 	private String authorEmail;
 	@Column(name="AUTHOR_PHONE")
 	private String authorPhone;
+	@Column(name="HASHED_PASSWORD")
+	private String hashedPassword;
 	@Column(name="CREATE_DATE")
-	private Date joinDate;
+	private LocalDateTime joinDate;
 	@Column(name="UPDATE_DATE")
-	private Date updateDate;
+	private LocalDateTime updateDate;
 	
 	@Override
 	public Long getId() {
@@ -68,7 +75,42 @@ public class Author implements Serializable,Comparable<Author>,BaseEntity {
 	public void setAuthorPhone(String authorPhone) {
 		this.authorPhone = authorPhone;
 	}
-
+	/**
+	 * @return the hashedPassword
+	 */
+	public String getHashedPassword() {
+		return hashedPassword;
+	}
+	/**
+	 * @param hashedPassword the hashedPassword to set
+	 */
+	public void setHashedPassword(String hashedPassword) {
+		this.hashedPassword = hashedPassword;
+	}
+	/**
+	 * @return the joinDate
+	 */
+	public LocalDateTime getJoinDate() {
+		return joinDate;
+	}
+	/**
+	 * @param joinDate the joinDate to set
+	 */
+	public void setJoinDate(LocalDateTime joinDate) {
+		this.joinDate = joinDate;
+	}
+	/**
+	 * @return the updateDate
+	 */
+	public LocalDateTime getUpdateDate() {
+		return updateDate;
+	}
+	/**
+	 * @param updateDate the updateDate to set
+	 */
+	public void setUpdateDate(LocalDateTime updateDate) {
+		this.updateDate = updateDate;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -140,4 +182,13 @@ public class Author implements Serializable,Comparable<Author>,BaseEntity {
 		return this.authorName.compareTo(author.getAuthorName());
 	}
 	
+	@JsonIgnore
+	public AuthorApi getApi(){
+		DateFormat formatter=new SimpleDateFormat("d MMM yyyy");
+		AuthorApi authorApi=new AuthorApi();
+		authorApi.setAuthorEmail(this.authorEmail);
+		authorApi.setAuthorName(this.authorName);
+		authorApi.setAuthorPhone(this.authorPhone);
+		return authorApi;
+	}
 }
