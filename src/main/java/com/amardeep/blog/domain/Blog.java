@@ -201,7 +201,7 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 		DateFormat formatter=new SimpleDateFormat("d MMM yyyy");
 		blogApi.setId(this.id);
 		blogApi.setBlogTitle(this.blogTitle);
-		blogApi.setBlogText(this.blogTitle);
+		blogApi.setBlogText(this.blogText);
 		blogApi.setBlogAuthor(this.blogAuthor.getId());
 		blogApi.setBlogCreationDate(this.blogUpdateDate!=null?formatter.format(this.blogUpdateDate):formatter.format(this.blogDate));
 		return blogApi;
