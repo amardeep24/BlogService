@@ -14,11 +14,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.amardeep.blog.api.BlogApi;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author AMARDEEP
@@ -42,8 +43,9 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 	private String blogTitle;
 	@Column(name="BLOG_TEXT")
 	private String blogText;
-	@Column(name="BLOG_AUTHOR")
-	private Integer blogAuthor;
+	@ManyToOne
+	@JoinColumn(name="AUTHOR_ID",nullable=false)
+	private Author blogAuthor;
 	@Column(name="CREATE_DATE")
 	private Date blogDate;
 	@Column(name="UPDATE_DATE")
@@ -89,13 +91,13 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 	/**
 	 * @return the blogAuthor
 	 */
-	public Integer getBlogAuthor() {
+	public Author getBlogAuthor() {
 		return blogAuthor;
 	}
 	/**
 	 * @param blogAuthor the blogAuthor to set
 	 */
-	public void setBlogAuthor(Integer blogAuthor) {
+	public void setBlogAuthor(Author blogAuthor) {
 		this.blogAuthor = blogAuthor;
 	}
 	
@@ -193,16 +195,17 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 	public int compareTo(Blog blog) {
 		return this.blogDate.compareTo(blog.getBlogDate());
 	}
-	@JsonIgnore
-	public BlogApi getApi(){
-		DateFormat formatter=new SimpleDateFormat("d MMM yyyy");
+	@Override
+	public BlogApi getApi() {
 		BlogApi blogApi=new BlogApi();
+		DateFormat formatter=new SimpleDateFormat("d MMM yyyy");
 		blogApi.setId(this.id);
 		blogApi.setBlogTitle(this.blogTitle);
-		blogApi.setBlogText(this.blogText);
-		blogApi.setBlogAuthor(this.blogAuthor);
-		blogApi.setBlogCreationDate(this.getBlogUpdateDate()!=null && this.getBlogDate().before(this.getBlogUpdateDate())
-				? formatter.format(this.getBlogUpdateDate()) : formatter.format(this.getBlogDate()));
+		blogApi.setBlogText(this.blogTitle);
+		blogApi.setBlogAuthor(this.blogAuthor.getId());
+		blogApi.setBlogCreationDate(this.blogUpdateDate!=null?formatter.format(this.blogUpdateDate):formatter.format(this.blogDate));
 		return blogApi;
 	}
+	
+	
 }

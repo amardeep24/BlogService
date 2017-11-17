@@ -8,12 +8,15 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -45,10 +48,12 @@ public class Author implements Serializable,Comparable<Author>,BaseEntity {
 	private String authorPhone;
 	@Column(name="HASHED_PASSWORD")
 	private String hashedPassword;
+	@OneToMany(mappedBy="blogAuthor")
+	private Set<Blog> blogs;
 	@Column(name="CREATE_DATE")
-	private LocalDateTime joinDate;
+	private Date joinDate;
 	@Column(name="UPDATE_DATE")
-	private LocalDateTime updateDate;
+	private Date updateDate;
 	
 	@Override
 	public Long getId() {
@@ -76,6 +81,19 @@ public class Author implements Serializable,Comparable<Author>,BaseEntity {
 		this.authorPhone = authorPhone;
 	}
 	/**
+	 * @return the blogs
+	 */
+	public Set<Blog> getBlogs() {
+		return blogs;
+	}
+	/**
+	 * @param blogs the blogs to set
+	 */
+	public void setBlogs(Set<Blog> blogs) {
+		this.blogs = blogs;
+	}
+
+	/**
 	 * @return the hashedPassword
 	 */
 	public String getHashedPassword() {
@@ -90,25 +108,25 @@ public class Author implements Serializable,Comparable<Author>,BaseEntity {
 	/**
 	 * @return the joinDate
 	 */
-	public LocalDateTime getJoinDate() {
+	public Date getJoinDate() {
 		return joinDate;
 	}
 	/**
 	 * @param joinDate the joinDate to set
 	 */
-	public void setJoinDate(LocalDateTime joinDate) {
+	public void setJoinDate(Date joinDate) {
 		this.joinDate = joinDate;
 	}
 	/**
 	 * @return the updateDate
 	 */
-	public LocalDateTime getUpdateDate() {
+	public Date getUpdateDate() {
 		return updateDate;
 	}
 	/**
 	 * @param updateDate the updateDate to set
 	 */
-	public void setUpdateDate(LocalDateTime updateDate) {
+	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
 	/* (non-Javadoc)
@@ -186,9 +204,11 @@ public class Author implements Serializable,Comparable<Author>,BaseEntity {
 	public AuthorApi getApi(){
 		DateFormat formatter=new SimpleDateFormat("d MMM yyyy");
 		AuthorApi authorApi=new AuthorApi();
-		authorApi.setAuthorEmail(this.authorEmail);
+		authorApi.setId(this.id);
 		authorApi.setAuthorName(this.authorName);
 		authorApi.setAuthorPhone(this.authorPhone);
+		authorApi.setAuthorEmail(this.authorEmail);
+		authorApi.setJoiningDate(formatter.format(this.joinDate));
 		return authorApi;
 	}
 }

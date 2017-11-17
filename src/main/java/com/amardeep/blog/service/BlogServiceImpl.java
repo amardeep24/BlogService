@@ -34,8 +34,8 @@ public class BlogServiceImpl implements BlogService{
 	@Transactional
 	public Blog createBlog(Blog blog) {
 		logger.info("####createBlog invoked with data####",blog);
-		blog.setBlogDate(new Date());
 		Assert.notNull(blog,"Blog is empty.");
+		blog.setBlogDate(new Date());
 		return blogRepository.save(blog);
 	}
 

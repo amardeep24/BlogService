@@ -73,6 +73,31 @@ public class AuthorApi extends BaseApi<Author>{
 	public void setAuthorPhone(String authorPhone) {
 		this.authorPhone = authorPhone;
 	}
+	/**
+	 * @return the joiningDate
+	 */
+	public String getJoiningDate() {
+		return joiningDate;
+	}
+	/**
+	 * @param joiningDate the joiningDate to set
+	 */
+	public void setJoiningDate(String joiningDate) {
+		this.joiningDate = joiningDate;
+	}
+	/**
+	 * @return the hashedPassword
+	 */
+	public String getHashedPassword() {
+		return hashedPassword;
+	}
+	/**
+	 * @param hashedPassword the hashedPassword to set
+	 */
+	public void setHashedPassword(String hashedPassword) {
+		this.hashedPassword = hashedPassword;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -138,18 +163,6 @@ public class AuthorApi extends BaseApi<Author>{
 	public String toString() {
 		return "AuthorApi [id=" + id + ", authorName=" + authorName + ", authorEmail=" + authorEmail + ", authorPhone="
 				+ authorPhone + "]";
-	}
-	/**
-	 * @return the joiningDate
-	 */
-	public String getJoiningDate() {
-		return joiningDate;
-	}
-	/**
-	 * @param joiningDate the joiningDate to set
-	 */
-	public void setJoiningDate(String joiningDate) {
-		this.joiningDate = joiningDate;
 	}
 	
 }

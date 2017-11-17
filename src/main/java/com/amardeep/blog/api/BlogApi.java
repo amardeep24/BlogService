@@ -10,7 +10,7 @@ public class BlogApi extends BaseApi<Blog>{
 	private Long id;
 	private String blogTitle;
 	private String blogText;
-	private Integer blogAuthor;
+	private Long blogAuthor;
 	private String blogCreationDate;
 	
 	/**
@@ -52,13 +52,13 @@ public class BlogApi extends BaseApi<Blog>{
 	/**
 	 * @return the blogAuthor
 	 */
-	public Integer getBlogAuthor() {
+	public Long getBlogAuthor() {
 		return blogAuthor;
 	}
 	/**
 	 * @param blogAuthor the blogAuthor to set
 	 */
-	public void setBlogAuthor(Integer blogAuthor) {
+	public void setBlogAuthor(Long blogAuthor) {
 		this.blogAuthor = blogAuthor;
 	}
 	/**
