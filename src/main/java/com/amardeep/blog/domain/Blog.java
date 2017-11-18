@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import com.amardeep.blog.api.BlogApi;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -201,6 +202,7 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 		return this.blogDate.compareTo(blog.getBlogDate());
 	}
 	@Override
+	@JsonIgnore
 	public BlogApi getApi() {
 		BlogApi blogApi=new BlogApi();
 		DateFormat formatter=new SimpleDateFormat("d MMM yyyy");
