@@ -4,7 +4,6 @@
  */
 package com.amardeep.blog.service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.amardeep.blog.domain.Blog;
+import com.amardeep.blog.indexing.repository.BlogEsRepository;
 import com.amardeep.blog.repository.BlogRepository;
 
 /**
@@ -30,13 +30,19 @@ public class BlogServiceImpl implements BlogService{
 	@Autowired
 	BlogRepository blogRepository;
 	
+	@Autowired
+	BlogEsRepository blogEsRepository;
+	
 	@Override
 	@Transactional
 	public Blog createBlog(Blog blog) {
 		logger.info("####createBlog invoked with data####",blog);
 		Assert.notNull(blog,"Blog is empty.");
 		blog.setBlogDate(new Date());
-		return blogRepository.save(blog);
+		Blog createdBlog=blogRepository.save(blog);
+		//Saving Blog in elasticserach engine
+	    blogEsRepository.save(createdBlog);
+	    return createdBlog;
 	}
 
 	@Override
@@ -58,7 +64,10 @@ public class BlogServiceImpl implements BlogService{
 		oldBlog.setBlogText(blog.getBlogText());
 		oldBlog.setBlogTitle(blog.getBlogTitle());
 		oldBlog.setBlogUpdateDate(new Date());
-		return blogRepository.save(oldBlog);
+		Blog updatedBlog=blogRepository.save(oldBlog);
+		//Updating Blog in elasticserach engine
+	    blogEsRepository.save(updatedBlog);
+	    return updatedBlog;
 		
 	}
 
@@ -67,6 +76,7 @@ public class BlogServiceImpl implements BlogService{
 	public void deleteBlog(Long id) {
 		logger.info("####deleteBlog invoked with id####",id);
 		blogRepository.delete(id);
+		blogEsRepository.delete(id);
 	}
 
 	@Override

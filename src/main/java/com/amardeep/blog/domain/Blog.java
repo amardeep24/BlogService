@@ -19,12 +19,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import com.amardeep.blog.api.BlogApi;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author AMARDEEP
  *
  */
+@Document(indexName="blog",type="blogs")
 @Entity
 @Table(name="BLOG")
 public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
@@ -43,6 +47,7 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 	private String blogTitle;
 	@Column(name="BLOG_TEXT")
 	private String blogText;
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="AUTHOR_ID",nullable=false)
 	private Author blogAuthor;

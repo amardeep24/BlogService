@@ -39,8 +39,29 @@ public class AuthorServiceImpl implements AuthorService{
 
 	@Override
 	public Author getAuthor(Long id) {
-		Author author=authorRepository.findOne(id);
-		return author;
+		return authorRepository.findOne(id);
+	}
+
+	@Override
+	@Transactional
+	public void deleteAuthor(Long id) {
+		logger.info("####deleteAuthor invoked with id####",id);
+		authorRepository.delete(id);
+	}
+
+	@Override
+	@Transactional
+	public Author updateAuthor(Author author) {
+		logger.info("####updateAuthor invoked with data####",author);
+		Assert.notNull(author,"Author is empty.");
+		Author oldAuthor=authorRepository.findOne(author.getId());
+		Assert.notNull(oldAuthor,"No author fund for given id");
+		oldAuthor.setAuthorEmail(author.getAuthorEmail());
+		oldAuthor.setAuthorName(author.getAuthorName());
+		oldAuthor.setAuthorPhone(author.getAuthorPhone());
+		oldAuthor.setUpdateDate(new Date());
+		oldAuthor=authorRepository.save(oldAuthor);
+		return oldAuthor;
 	}
 
 }
