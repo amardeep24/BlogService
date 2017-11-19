@@ -34,8 +34,13 @@ public class BlogAppStartup implements ApplicationListener<ApplicationReadyEvent
 		for(String profile:profiles){
 			if("uat".equalsIgnoreCase(profile.toLowerCase())){
 				List<Blog> blogs=blogRepository.findAll();
-				blogEsRepository.save(blogs);
-				logger.info("####Indexes refresed####");
+				blogEsRepository.deleteAll();
+				Iterable<Blog> itr=blogEsRepository.save(blogs);
+				int countOfBlogs=0;
+				for(Blog blog:itr){
+					countOfBlogs++;
+				}
+				logger.info("####Indexes refresed####",countOfBlogs);
 			}
 		}
 	}

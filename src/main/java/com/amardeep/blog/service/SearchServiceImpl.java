@@ -19,9 +19,9 @@ public class SearchServiceImpl implements SearchService{
 	BlogEsRepository blogEsRepository;
 	
 	@Override
-	public List<Blog> searchBlog(String keyWord) {
-		logger.info("####searchBlog invoked with keyWord####",keyWord);
-		return blogEsRepository.findByBlogTitleOrBlogText(keyWord,keyWord);
+	public List<Blog> searchBlog(String keyword) {
+		logger.info("####searchBlog invoked with keyWord####",keyword);
+		return blogEsRepository.findByBlogTitleOrBlogText(keyword,keyword);
 	}
 
 }

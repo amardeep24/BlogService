@@ -1,9 +1,9 @@
 package com.amardeep.blog.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amardeep.blog.api.BlogApi;
+import com.amardeep.blog.api.SearchApi;
 import com.amardeep.blog.domain.Blog;
 import com.amardeep.blog.service.SearchService;
 
@@ -30,10 +32,17 @@ public class SearchController {
 	SearchService searchService;
 	
 	@GetMapping(value="search", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Blog>> searchBlog(@RequestParam(value="keyWord") String keyWord,Pageable pageable){
-		logger.info("####searchBlog invoked with keyWord####",keyWord);
-		List<Blog> blogs=searchService.searchBlog(keyWord);
-		return new ResponseEntity<>(blogs,HttpStatus.OK);
+	public ResponseEntity<SearchApi> searchBlog(@RequestParam(value="keyword") String keyword,Pageable pageable){
+		logger.info("####searchBlog invoked with keyWord####",keyword);
+		List<Blog> blogs=searchService.searchBlog(keyword);
+		Set<BlogApi> blogApis=blogs.stream()
+									.filter(Objects::nonNull)
+									.map(Blog::getApi)
+									.collect(Collectors.toSet());
+		SearchApi searchResults=new SearchApi();
+		searchResults.setBlogApis(blogApis);
+		searchResults.setHitCount(new Long(blogApis.size()));
+		return new ResponseEntity<>(searchResults,HttpStatus.OK);
 		
 	}
 	

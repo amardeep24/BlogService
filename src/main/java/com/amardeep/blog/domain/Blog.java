@@ -209,7 +209,7 @@ public class Blog implements Serializable,Comparable<Blog>,BaseEntity {
 		blogApi.setId(this.id);
 		blogApi.setBlogTitle(this.blogTitle);
 		blogApi.setBlogText(this.blogText);
-		blogApi.setBlogAuthor(this.blogAuthor.getId());
+		blogApi.setBlogAuthor(this.blogAuthor!=null?this.blogAuthor.getId():0);
 		blogApi.setBlogCreationDate(this.blogUpdateDate!=null?formatter.format(this.blogUpdateDate):formatter.format(this.blogDate));
 		return blogApi;
 	}
