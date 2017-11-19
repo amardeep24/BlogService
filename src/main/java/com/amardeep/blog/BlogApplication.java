@@ -27,6 +27,7 @@ public class BlogApplication {
 	private static final Logger logger = LoggerFactory.getLogger(BlogApplication.class);
 
 	public static void main(String[] args) {
+		logger.info("####Started application##");
 		SpringApplication.run(BlogApplication.class, args);
 	}
 	@Bean
