@@ -4,12 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.amardeep</groupId>
-	<artifactId>PhotoBlog</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>BlogService</artifactId>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>PhotoBlog</name>
-	<description>Photo blogging app</description>
+	<name>BlogService</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -132,4 +131,6 @@
 	</build>
 
 
+	<description>Blog CRUD service and search.</description>
+	<url>calm-harbor-87742.herokuapp.com/blog/</url>
 </project>
